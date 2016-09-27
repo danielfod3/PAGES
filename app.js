@@ -83,7 +83,7 @@ var app = angular.module('app', ['ngRoute']);
 
 		$scope.verificarAdmi = function(){
 
-      $http.post('BackEnd/LoginAdmin/validar.php', {username: $scope.Adm.user , pass: $scope.Adm.password })
+      $http.post('BackEnd/LoginAdmin/validarAdmin.php', {username: $scope.Adm.user , pass: $scope.Adm.password })
             .then(function(res){
               console.log('Success', res.data);
                 $scope.comprobar = res.data.Respuesta;
@@ -100,6 +100,7 @@ var app = angular.module('app', ['ngRoute']);
                 }else{
                     ServicioDatos.logAdmin = false;
                 }
+
             });
 		};
 	});
@@ -157,64 +158,88 @@ var app = angular.module('app', ['ngRoute']);
 
     }
 
-
       $scope.nombreProfesor = "";
       $scope.asignatura = "";
       $scope.contras = "";
       $scope.oferta = [];
 
-      //Peticion para obtener datos y llenar la tabla con la oferta academica
-      $http({
-        method: 'GET',
-        url: "http://localhost:8888/interfaceAdministrador"
-        }).then(function (response) {
-          $scope.oferta = response.data;
-          console.log(response.data);
-          // this callback will be called asynchronously
-          // when the response is available
-        });
+      // //Peticion para obtener datos y llenar la tabla con la oferta academica
+      // $http({
+      //   method: 'GET',
+      //   url: "http://localhost:8888/interfaceAdministrador"
+      //   }).then(function (response) {
+      //     $scope.oferta = response.data;
+      //     console.log(response.data);
+      //     // this callback will be called asynchronously
+      //     // when the response is available
+      //   });
 
       $scope.agregarProfesor = function(){
-        var req = {
-          method : 'POST',
-          url : "http://localhost:8888/interfaceAdministrador",
-          headers: {
-            'Content-Type' : 'application/json'
-          },
-          data: $.param({ nameProfesor : $scope.nombreProfesor , Asignatura : $scope.asignatura, Contrasena : $scope.contras})
-        };
+//
+        // console.log('Success', $scope.nombreProfesor , $scope.asignatura, $scope.contras);
 
-        $http(req)
-        .then(function(res){
-          //window.alert(res.data.query.NombreRsquest + " " + res.data.query.NombreDB);
-          console.log('Success', res.data);
+        $http.post('BackEnd/LoginAdmin/loginAdmin.php', {nam : $scope.nombreProfesor , Asignatura : $scope.asignatura, Contrasena : $scope.contras })
+              .then(function(res){
+                console.log('Success', res.data);
+                  $scope.comprobar = res.data.Respuesta;
+                  $scope.comprobar2 = false;
 
-            //$location.path('/interfaceAdministrador');
-            $route.reload();
+                  // if ($scope.comprobar == true) {
+                  //
+                  //   ServicioDatos.logAdmin = true;
+                  //
+                  //
+                  //
+                  //   $location.path('/interfaceAdministrador');
+                  //
+                  // }else{
+                  //     ServicioDatos.logAdmin = false;
+                  // }
 
-        });
+              });
+
+
+        // var req = {
+        //   method : 'POST',
+        //   url : "http://localhost:8888/interfaceAdministrador",
+        //   headers: {
+        //     'Content-Type' : 'application/json'
+        //   },
+        //   data: $.param({ nameProfesor : $scope.nombreProfesor , Asignatura : $scope.asignatura, Contrasena : $scope.contras})
+        // };
+        //
+        // $http(req)
+        // .then(function(res){
+        //   //window.alert(res.data.query.NombreRsquest + " " + res.data.query.NombreDB);
+        //   console.log('Success', res.data);
+        //
+        //     //$location.path('/interfaceAdministrador');
+        //     $route.reload();
+        //
+        // });
+
       }
 
       $scope.eliminarProfesor = function(){
 
-        var req = {
-          method : 'DELETE',
-          url : "http://localhost:8888/interfaceAdministrador",
-          headers: {
-            'Content-Type' : 'application/json'
-          },
-          data: $.param({ nameProfesor : $scope.nombreProfesor , Asignatura : $scope.asignatura})
-        };
-
-        $http(req)
-        .then(function(res){
-          //window.alert(res.data.query.NombreRsquest + " " + res.data.query.NombreDB);
-          console.log('Success', res.data);
-
-            //$location.path('/interfaceAdministrador');
-            $route.reload();
-
-        });
+        // var req = {
+        //   method : 'DELETE',
+        //   url : "http://localhost:8888/interfaceAdministrador",
+        //   headers: {
+        //     'Content-Type' : 'application/json'
+        //   },
+        //   data: $.param({ nameProfesor : $scope.nombreProfesor , Asignatura : $scope.asignatura})
+        // };
+        //
+        // $http(req)
+        // .then(function(res){
+        //   //window.alert(res.data.query.NombreRsquest + " " + res.data.query.NombreDB);
+        //   console.log('Success', res.data);
+        //
+        //     //$location.path('/interfaceAdministrador');
+        //     $route.reload();
+        //
+        // });
       }
 
       $scope.cerrarSesion = function(){
