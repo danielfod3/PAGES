@@ -25,14 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST)){
 
 	    $data = json_decode(file_get_contents('php://input'), true);
 
+        $operacion = $data["operacion"];
+				$nameProfesor_pos= $data["nam"];
+				$asignatura_pos= $data["Asignatura"];
+				$contra_pos= $data["Contrasena"];
 
 				if($operacion == "agregar"){
-
-					$operacion = $data["operacion"];
-					$nameProfesor_pos= $data["nam"];
-					$asignatura_pos= $data["Asignatura"];
-					$contra_pos= $data["Contrasena"];
-
 
 					// $result = array('nombre' => $nameProfesor_pos,
 					//                 'asignatura' =>  	$asignatura_pos,
@@ -50,9 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST)){
 
 			}else{
 
-				$nameProfesor_pos= $data["nam"];
-				$asignatura_pos= $data["Asignatura"];
-
 				mysqli_query($mysqli, "DELETE FROM profesores WHERE name = '$nameProfesor_pos' and curso = '$asignatura_pos'");
 				$mysqli->close();
 
@@ -67,7 +62,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST)){
 			}
 
 }
-
-
 
 ?>

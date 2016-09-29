@@ -71,10 +71,6 @@ var app = angular.module('app', ['ngRoute']);
     return ret;
   });
 
-  app.controller('Ctrl', function($scope){
-  	$scope.Variable = "Si FUNCIONA";
-  });
-
 	app.controller('ControllerAdmin', function($scope, $http, $location, ServicioDatos){
 
     //Usado para los avisos de datos ingresados correcto o incorrectos
@@ -112,40 +108,63 @@ var app = angular.module('app', ['ngRoute']);
     $scope.comprobar2 = true;
     $scope.vara = "";
     $scope.servicio = ServicioDatos;
-    //ServicioDatos.datosCompatidos = "Probando";
 
-    $scope.verificarProf = function(){
+		$scope.verificarProf = function(){
 
-      var req = {
-        method : 'POST',
-        url : "http://localhost:8888/AutentificacionProf",
-        headers: {
-          'Content-Type' : 'application/json'
-        },
-        data: $.param({ name : $scope.Profe.nomb , password : $scope.Profe.pass})
-      };
+      $http.post('BackEnd/LoginProf/LoginProf.php', {username: $scope.Adm.user , pass: $scope.Adm.password })
+            .then(function(res){
+              console.log('Success', res.data);
+                $scope.comprobar = res.data.Respuesta;
+                $scope.comprobar2 = false;
 
-      $http(req)
-      .then(function(res){
-        //window.alert(res.data.query.NombreRsquest + " " + res.data.query.NombreDB);
-        console.log('Success', res.data);
-        $scope.comprobar = res.data.Respuesta;
-        $scope.comprobar2 = false;
-
-        if ($scope.comprobar == true) {
-
-          ServicioDatos.datosCompatidos = res.data.Materia;
-
-          $location.path('/interfaceProfesor');
+                if ($scope.comprobar == true) {
 
 
-        }
-
-      });
+                  ServicioDatos.logAdmin = true;
 
 
-      //window.alert("$scope.Adm.user + $scope.Adm.password");
-    };
+                  $location.path('/interfaceAdministrador');
+
+                }else{
+                    ServicioDatos.logAdmin = false;
+                }
+
+            });
+		};
+
+    //
+    // $scope.verificarProf = function(){
+    //
+    //   var req = {
+    //     method : 'POST',
+    //     url : "http://localhost:8888/AutentificacionProf",
+    //     headers: {
+    //       'Content-Type' : 'application/json'
+    //     },
+    //     data: $.param({ name : $scope.Profe.nomb , password : $scope.Profe.pass})
+    //   };
+    //
+    //   $http(req)
+    //   .then(function(res){
+    //     //window.alert(res.data.query.NombreRsquest + " " + res.data.query.NombreDB);
+    //     console.log('Success', res.data);
+    //     $scope.comprobar = res.data.Respuesta;
+    //     $scope.comprobar2 = false;
+    //
+    //     if ($scope.comprobar == true) {
+    //
+    //       ServicioDatos.datosCompatidos = res.data.Materia;
+    //
+    //       $location.path('/interfaceProfesor');
+    //
+    //
+    //     }
+    //
+    //   });
+    //
+    //
+    //   //window.alert("$scope.Adm.user + $scope.Adm.password");
+    // };
 
   });
 
